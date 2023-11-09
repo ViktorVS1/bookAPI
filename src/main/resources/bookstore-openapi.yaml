@@ -1,0 +1,95 @@
+openapi: 3.0.0
+info:
+  title: Bookstore API
+  description: API for managing books in a bookstore
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/
+paths:
+  /books:
+    get:
+      summary: Retrieve a list of books
+      responses:
+        '200':
+          description: A list of books
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Book'
+    post:
+      summary: Add a new book
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Book'
+      responses:
+        '201':
+          description: Book created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+  /books/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the book to be updated or deleted
+        schema:
+          type: integer
+    get:
+      summary: Retrieve a book by ID
+      responses:
+        '200':
+          description: The book with the given ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        '404':
+          description: Book not found
+    put:
+      summary: Update a book by ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Book'
+      responses:
+        '200':
+          description: Book updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        '404':
+          description: Book not found
+    delete:
+      summary: Delete a book by ID
+      responses:
+        '204':
+          description: Book deleted successfully
+        '404':
+          description: Book not found
+components:
+  schemas:
+    Book:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        author:
+          type: string
+        publicationYear:
+          type: integer
+      required:
+        - title
+        - author
+        - publicationYear
